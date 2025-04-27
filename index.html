@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laxmi Nivas Morishetty - Profile Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Floating bubbles background */
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: rise 15s infinite ease-in;
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -100px;
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(100px);
+            }
+            100% {
+                bottom: 1080px;
+                transform: translateX(-200px);
+            }
+        }
+
+        /* Card container */
+        .card-container {
+            perspective: 1000px;
+            width: 320px;
+            height: 450px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+
+        .card-container.retreat {
+            transform: translateY(50px) scale(0.95);
+            opacity: 0.7;
+        }
+
+        /* Profile card */
+        .profile-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: float 6s ease-in-out infinite;
+            text-align: center;
+        }
+
+        
+
+        /* Card sides */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Front side */
+        .card-front {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.9) 100%);
+            transform: rotateY(0deg);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Back side */
+        .card-back {
+            color: white;
+            transform: rotateY(180deg);
+            text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Profile image */
+        .profile-image-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        /* Shine effect */
+        .shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.4) 0%, 
+                rgba(255, 255, 255, 0) 60%);
+            border-radius: 50%;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            20% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+
+        /* Profile name */
+        .profile-name {
+            margin: 0;
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            opacity: 0.8;
+            animation: pulseText 2s infinite;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* Back side content */
+        .about-text {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 16px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 22px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Company logos section */
+        .company-logos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .company-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .company-logo {
+            width: 100%;
+            height: auto;
+            max-height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .company-logo:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #595980 0%, #627ec9 100%);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 300px;
+            width: 90%;
+            max-height: 80vh;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            transition: transform 0.3s ease;
+            align-self: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            overflow-y: auto;
+            max-height: 150px;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.5) transparent;
+        }
+
+        .modal-description::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .modal-description::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-description::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 2px;
+        }
+
+        .modal-social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .modal-social-link {
+            color: rgb(37, 34, 34);
+            font-size: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .modal-social-link:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        /* Contact info */
+        .contact-info {
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .contact-link {
+            color: white;
+            font-size: 22px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Scrollable content container */
+        .scroll-container {
+            width: 100%;
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.5) transparent;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 3px;
+        }
+
+        /* Flipped state */
+        .profile-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Hover effects */
+        @media (hover: hover) {
+            .profile-card:not(.flipped):hover .profile-name {
+                color: #e73c7e;
+                transform: translateY(-5px);
+                text-shadow: 0 5px 15px rgba(231, 60, 126, 0.3);
+            }
+            
+            .profile-card:not(.flipped):hover .profile-image {
+                transform: scale(1.08);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            }
+            
+            .profile-card:not(.flipped):hover {
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 400px) {
+            .card-container {
+                width: 290px;
+                height: 420px;
+            }
+            
+            .profile-image-container {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .about-text {
+                font-size: 15px;
+            }
+            
+            .logo-grid {
+                grid-template-columns: 1fr;
+                max-width: 180px;
+            }
+            
+            .modal-content {
+                max-height: 70vh;
+            }
+            
+            .modal-description {
+                max-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <div class="card-container" id="cardContainer">
+        <div class="profile-card" id="profileCard">
+            <div class="card-front">
+                <div class="profile-image-container">
+                    <img src="https://media-hosting.imagekit.io/0137760dc5cd4fcf/IMG_1995.jpg?Expires=1840222770&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=X4RQICJZAysdHZtKXVqC7Fd~GDfmTpQndgG2dtEJr4~8FEd7~lR4hRur2UblCkyBrxNoVas4z7Pla9cOXkPbeeDJZEBXWGoTUG4Tvl5fqLMSJWRIKo44AnbAYMiFxhxWYR~lPqIIsvzKb9PiPMPOi5D2M9wWbsMT5~OlYslbC7FQNdO1AQFzvouzAPAdRFY2dDXM2IuoCSUD7hWOy5kJO5XfFQ6NGaKXn5N0kpe0t7KPPUq908NoR8OxJlKX4f-XJ3g6R4jl5rdqunD7JK0aI3JE3JZ8MMIg98JZnbGMjbfSO5ePXF86oxT1eM0OtzivBvXiiz0NL2izxFj-Rk1bVQ__" alt="Profile Photo" class="profile-image">
+                    <div class="shine"></div>
+                </div>
+                <h2 class="profile-name">Laxmi Nivas Morishetty</h2>
+                <h4 style="color: #2a0393; font-size: 12px;">Education | Innovation | Entrepreneurship </h4>
+                <div class="hint">Click to flip</div>
+            </div>
+            <div class="card-back">
+                <div class="scroll-container">
+                    <h3>About Me</h3>
+                    <p class="about-text">Hello! I'm <strong>Laxmi Nivas Morishetty</strong>,
+                        a passionate developer with experience in building dynamic and user-centric web applications. I focus on developing solutions that are practical and impactful—especially for students, educators, and institutions. With a strong drive for exploring emerging technologies, I strive to create applications that streamline learning, enhance academic collaboration, and contribute positively to the educational ecosystem.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://laxminivas-self-porfolio.vercel.app/" class="social-link" target="_blank" title="Visit my website">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        <a href="https://in.linkedin.com/in/laxmi-nivas-morishetty-02468m" class="social-link" target="_blank" title="Connect on LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://www.instagram.com/laxminivasmorishetty/" class="social-link" target="_blank" title="Follow me on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://github.com/laxminivas06" class="social-link" target="_blank" title="View my GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="company-logos">
+                        <div class="company-title">Our Organisations</div>
+                        <div class="logo-grid">
+                            <!-- Company logos with data attributes for modal content -->
+                            <img src="https://media-hosting.imagekit.io/4240bcf9fa4c4d73/1.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=lZPKa5PMRDN8d-JDLs9ERnk9opfRvVtIbo2Hjr1Edc8jXbSYuztb19ePi03o7agPf6-r6YX~zfc6OiEyDWpM0MJ35YPI-~FrzbdF4MicjL9t-cyuXRmRWyQUQJqb2dAIhOnLUIhkggRkd6ux9UJD3Q4Pw5I5YpOJ9hEjHhAQFy6Br4KSVJO8M4G7Qj2VHYkG5zpIES1BID~bO0u0Uwt2yPPBp6odhOW-Fq~h4UFIAt9HkLrupfnq7JKBEJvRN3~smsJs6ep4I3U2Oi79H9TULr9saIjFTihXhiaid5SR9uRVzkPR4wCIyOx2OxpgAJlfQxRt90G6SpMRmvPw4T9MFA__" 
+                                 alt="Company 1" 
+                                 class="company-logo"
+                                 data-name="Padma Tutorials"
+                                 data-website="https://example.com"
+                                 data-instagram="https://www.instagram.com/padmatutorials/"
+                                 data-description="Padma Tutorials is the gateway to mastering the new-age skills necessary for the evolving world of technology. With expert mentors at the helm, Padma Tutorials focuses on teaching individuals the tools, techniques, and mindset to excel in the latest tech fields. The platform is dedicated to providing high-quality, future-focused education, ensuring learners are equipped for success in the tech-driven world.">
+                            
+                            <img src="https://media-hosting.imagekit.io/eea054ba2429404c/4.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=VCN6rInsEBqOehx7w7dBKkO1yG~Afch2hU5YNJUtPL0UejieWy3ATo1QGNreLZD5efeVu6cJHEEpgN9DPzMIx1qYgnau0iNTW2UwAgLGyCCruQqAca-vo5WhSJ52f8me1gaZBC0qOGmSeYvf3qRqNlnJwm6J1s87U8YUlU3~wlQ64-DvtWQo9viDIMPESOgU6Sw6A6-21uZ9Dyx0hPEP5~cSSe77DhTdl1uiB7AnUw6BjMcmkX-PG-ucpWyZLuS-MxoyDZcZq0km1lrn6sa0U0H-HkdVuecTBc66W9O2O-L1l7fZOCRSrJL72XqciI~MGlfZu0X-5DFQ4zXXvN9eUw__" 
+                                 alt="Company 2" 
+                                 class="company-logo"
+                                 data-name="Wisdom Roots"
+                                 data-website="https://wisdomroots.netlify.app"
+                                 data-instagram="https://www.instagram.com/wisdomroots25/"
+                                 data-description="Wisdom Roots bridges the gap between theoretical knowledge and practical wisdom. It’s a platform where learners not only absorb information but also apply it through real-world experiences. By offering immersive, hands-on learning, Wisdom Roots empowers individuals to connect theory with practice, making them ready to face the challenges of the real world with confidence.">
+                            
+                            <img src="https://media-hosting.imagekit.io/5b50ccd21bcd49ce/3.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=u1TM1PsXKWzvJk0X7dNQOGP~UGkf4ZQSMZEnh9vt8Ju0Y0DNV~SqmTe6w9p~KnF14ZRoJ4iY5BxfJEIaB7HW2ePF-MgyLMppQFKCPs4VabtrDwGBITN-L2Wa8FUZNZoSDdOPTPeh51AgnXVt4OpomOatt03vBkj7zUcuP~uRLfiZAPjOGIYHpeNJhMO8pxQyIQePa3LOhALt23SJ~vHcX6B7hVhz3UOxlfOHycGLsldvNHJgKLsLvzrKGuEiMAaTWYQCGYpDC7uvF1saoDeAU0cuGly7ePl3qxdvhPkEu63vg0Fq8rnVRyE7L874hHAgiohcS81vIADGajfvd8mlRA__" 
+                                 alt="Company 3" 
+                                 class="company-logo"
+                                 data-name="Smart N Light Innovation"
+                                 data-website="https://example.com"
+                                 data-instagram="https://instagram.com/company3"
+                                 data-description="Smart and Light Innovation (SNL) is about pushing the boundaries of innovation and creation. It aims to bring fresh, innovative ideas to life, focusing on technology and creative solutions that are smart, efficient, and impactful. Whether it’s product development, innovative design, or cutting-edge solutions, SNL is a platform that empowers the next wave of creators and innovators to transform their ideas into reality.">
+                            
+                            <img src="https://media-hosting.imagekit.io/d0242154929c4e75/2.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=ipV3RcyJ2XqtEvDZNKg6oyPtjtxxjdQxt9T5Bkkd~83Gz9hUrPstD1gek7R6MLJsX-uY2AfiiLELp1XYUCNF0mUCOMf-al1-fxcEaLHhJF6qwhh2z8widBpQwpzWtYN2bcH9y2jZP0v0H6q4~Y48jr~nV1gjuWaa-~gxFLi5Gu~eUqk2BtVvb64uoX~Pq1HERLTMF5SMGOEeiPbBwyqRegDCI-Qdth8kPnzMzKvixZfy6MDzQqxQZ5wmo37cVTzkFgUKdHEILYFozgpdXdQndynVNhmD3EVy5MiFiSCRrO9kzEvj1nSGQqAwvC6Ze9nrCwpbwQCSXjJ82FUay26k-w__" 
+                                 alt="Company 4" 
+                                 class="company-logo"
+                                 data-name="Nivas Editz"
+                                 data-website="https://nivaseditz.netlify.app"
+                                 data-instagram="https://www.instagram.com/nivaseditz2024/"
+                                 data-description="Nivas Edits is your one-stop solution for freelancing and digital social media marketing. Specializing in crafting compelling digital content and strategic marketing solutions, Nivas Edits helps brands elevate their presence in the digital world. With a passion for creative editing and effective marketing, the platform offers top-notch services that connect businesses with their audiences in innovative ways.">
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <a href="mailto:morishettylaxminivas@gmail.com" class="contact-link" title="Email me">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="tel:+919059160424" class="contact-link" title="Call me">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Modal -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img id="modalLogo" src="" alt="Company Logo" class="modal-logo">
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <div class="modal-description" id="modalDescription"></div>
+            <div class="modal-social-links">
+                <a id="modalWebsite" href="#" target="_blank" class="modal-social-link" title="Website">
+                    <i class="fas fa-globe"></i>
+                </a>
+                <a id="modalInstagram" href="#" target="_blank" class="modal-social-link" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardContainer = document.getElementById('cardContainer');
+            const profileCard = document.getElementById('profileCard');
+            const modal = document.getElementById('companyModal');
+            const modalClose = document.querySelector('.modal-close');
+            const modalLogo = document.getElementById('modalLogo');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalWebsite = document.getElementById('modalWebsite');
+            const modalInstagram = document.getElementById('modalInstagram');
+            
+            // Track if modal is open
+            let isModalOpen = false;
+            
+            // Improved click/touch handler for profile card
+            function flipCard() {
+                if (isModalOpen) return; // Don't flip if modal is open
+                profileCard.classList.toggle('flipped');
+            }
+            
+            // Mouse click
+            profileCard.addEventListener('click', flipCard);
+            
+            // Touch support
+            profileCard.addEventListener('touchstart', function(e) {
+                // Prevent double-tap zoom on mobile
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+            
+            profileCard.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                flipCard();
+            }, { passive: false });
+            
+            // Keyboard support
+            profileCard.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard();
+                }
+            });
+            
+            // Make the card focusable for keyboard users
+            profileCard.setAttribute('tabindex', '0');
+            
+            // Auto-flip demo on first visit
+            const firstVisit = !sessionStorage.getItem('visited');
+            if (firstVisit) {
+                sessionStorage.setItem('visited', 'true');
+                setTimeout(() => {
+                    profileCard.classList.add('flipped');
+                    setTimeout(() => profileCard.classList.remove('flipped'), 3000);
+                }, 1000);
+            }
+            
+            // Prevent scrolling when interacting with the back side
+            const scrollContainer = document.querySelector('.scroll-container');
+            scrollContainer.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            }, { passive: false });
+            
+            // Company logo click handlers
+            const companyLogos = document.querySelectorAll('.company-logo');
+            companyLogos.forEach(logo => {
+                logo.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent card flip
+                    
+                    // Get data attributes
+                    const name = this.getAttribute('data-name');
+                    const website = this.getAttribute('data-website');
+                    const instagram = this.getAttribute('data-instagram');
+                    const description = this.getAttribute('data-description');
+                    const logoUrl = this.getAttribute('src');
+                    
+                    // Set modal content
+                    modalLogo.src = logoUrl;
+                    modalTitle.textContent = name;
+                    modalDescription.textContent = description;
+                    modalWebsite.href = website;
+                    modalInstagram.href = instagram;
+                    
+                    // Show modal with animation
+                    isModalOpen = true;
+                    cardContainer.classList.add('retreat');
+                    modal.style.display = 'flex';
+                    setTimeout(() => {
+                        modal.classList.add('show');
+                    }, 10);
+                });
+            });
+            
+            // Close modal button
+            modalClose.addEventListener('click', function() {
+                closeModal();
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Function to close modal with animation
+            function closeModal() {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    cardContainer.classList.remove('retreat');
+                    isModalOpen = false;
+                }, 300);
+            }
+            
+            // Retreat to front page when clicking profile card while modal is open
+            profileCard.addEventListener('click', function() {
+                if (isModalOpen) {
+                    closeModal();
+                    if (profileCard.classList.contains('flipped')) {
+                        profileCard.classList.remove('flipped');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
