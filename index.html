@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Laxmi Nivas Morishetty - Profile Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base styles */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -17,17 +22,20 @@
             margin: 0;
             padding: 20px;
             overflow: hidden;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
         }
 
         /* Floating bubbles background */
         .bubbles {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             z-index: 0;
             overflow: hidden;
             top: 0;
             left: 0;
+            pointer-events: none;
         }
 
         .bubble {
@@ -36,6 +44,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             animation: rise 15s infinite ease-in;
+            pointer-events: none;
         }
 
         @keyframes rise {
@@ -60,6 +69,7 @@
             position: relative;
             z-index: 1;
             transition: transform 0.5s ease;
+            touch-action: manipulation;
         }
 
         .card-container.retreat {
@@ -79,6 +89,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             animation: float 6s ease-in-out infinite;
             text-align: center;
+            touch-action: manipulation;
         }
 
         
@@ -95,8 +106,8 @@
             align-items: center;
             justify-content: center;
             padding: 25px;
-            box-sizing: border-box;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         /* Front side */
@@ -146,6 +157,7 @@
             border: 4px solid white;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.5s ease;
+            pointer-events: none;
         }
 
         /* Shine effect */
@@ -160,6 +172,7 @@
                 rgba(255, 255, 255, 0) 60%);
             border-radius: 50%;
             animation: shine 3s infinite;
+            pointer-events: none;
         }
 
         @keyframes shine {
@@ -176,6 +189,7 @@
             font-weight: 700;
             transition: all 0.3s ease;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
         }
 
         .hint {
@@ -184,6 +198,7 @@
             color: #666;
             opacity: 0.8;
             animation: pulseText 2s infinite;
+            pointer-events: none;
         }
 
         @keyframes pulseText {
@@ -222,6 +237,7 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
         }
 
         .social-link:hover {
@@ -262,7 +278,6 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
             padding: 8px;
-            box-sizing: border-box;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -286,6 +301,7 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            touch-action: manipulation;
         }
 
         .modal.show {
@@ -306,6 +322,7 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            touch-action: manipulation;
         }
 
         .modal.show .modal-content {
@@ -389,6 +406,7 @@
             justify-content: center;
             background: rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .modal-social-link:hover {
@@ -432,6 +450,7 @@
             padding-right: 10px;
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.5) transparent;
+            touch-action: pan-y;
         }
 
         .scroll-container::-webkit-scrollbar {
@@ -563,7 +582,7 @@
                                  data-name="Wisdom Roots"
                                  data-website="https://wisdomroots.netlify.app"
                                  data-instagram="https://www.instagram.com/wisdomroots25/"
-                                 data-description="Wisdom Roots bridges the gap between theoretical knowledge and practical wisdom. It’s a platform where learners not only absorb information but also apply it through real-world experiences. By offering immersive, hands-on learning, Wisdom Roots empowers individuals to connect theory with practice, making them ready to face the challenges of the real world with confidence.">
+                                 data-description="Wisdom Roots bridges the gap between theoretical knowledge and practical wisdom. It's a platform where learners not only absorb information but also apply it through real-world experiences. By offering immersive, hands-on learning, Wisdom Roots empowers individuals to connect theory with practice, making them ready to face the challenges of the real world with confidence.">
                             
                             <img src="https://media-hosting.imagekit.io/5b50ccd21bcd49ce/3.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=u1TM1PsXKWzvJk0X7dNQOGP~UGkf4ZQSMZEnh9vt8Ju0Y0DNV~SqmTe6w9p~KnF14ZRoJ4iY5BxfJEIaB7HW2ePF-MgyLMppQFKCPs4VabtrDwGBITN-L2Wa8FUZNZoSDdOPTPeh51AgnXVt4OpomOatt03vBkj7zUcuP~uRLfiZAPjOGIYHpeNJhMO8pxQyIQePa3LOhALt23SJ~vHcX6B7hVhz3UOxlfOHycGLsldvNHJgKLsLvzrKGuEiMAaTWYQCGYpDC7uvF1saoDeAU0cuGly7ePl3qxdvhPkEu63vg0Fq8rnVRyE7L874hHAgiohcS81vIADGajfvd8mlRA__" 
                                  alt="Company 3" 
@@ -571,7 +590,7 @@
                                  data-name="Smart N Light Innovation"
                                  data-website="https://example.com"
                                  data-instagram="https://instagram.com/company3"
-                                 data-description="Smart and Light Innovation (SNL) is about pushing the boundaries of innovation and creation. It aims to bring fresh, innovative ideas to life, focusing on technology and creative solutions that are smart, efficient, and impactful. Whether it’s product development, innovative design, or cutting-edge solutions, SNL is a platform that empowers the next wave of creators and innovators to transform their ideas into reality.">
+                                 data-description="Smart and Light Innovation (SNL) is about pushing the boundaries of innovation and creation. It aims to bring fresh, innovative ideas to life, focusing on technology and creative solutions that are smart, efficient, and impactful. Whether it's product development, innovative design, or cutting-edge solutions, SNL is a platform that empowers the next wave of creators and innovators to transform their ideas into reality.">
                             
                             <img src="https://media-hosting.imagekit.io/d0242154929c4e75/2.png?Expires=1840389579&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=ipV3RcyJ2XqtEvDZNKg6oyPtjtxxjdQxt9T5Bkkd~83Gz9hUrPstD1gek7R6MLJsX-uY2AfiiLELp1XYUCNF0mUCOMf-al1-fxcEaLHhJF6qwhh2z8widBpQwpzWtYN2bcH9y2jZP0v0H6q4~Y48jr~nV1gjuWaa-~gxFLi5Gu~eUqk2BtVvb64uoX~Pq1HERLTMF5SMGOEeiPbBwyqRegDCI-Qdth8kPnzMzKvixZfy6MDzQqxQZ5wmo37cVTzkFgUKdHEILYFozgpdXdQndynVNhmD3EVy5MiFiSCRrO9kzEvj1nSGQqAwvC6Ze9nrCwpbwQCSXjJ82FUay26k-w__" 
                                  alt="Company 4" 
@@ -626,17 +645,36 @@
             const modalWebsite = document.getElementById('modalWebsite');
             const modalInstagram = document.getElementById('modalInstagram');
             
-            // Track if modal is open
+            // Track if modal is open and flip state
             let isModalOpen = false;
+            let isFlipped = false;
             
             // Improved click/touch handler for profile card
             function flipCard() {
                 if (isModalOpen) return; // Don't flip if modal is open
-                profileCard.classList.toggle('flipped');
+                
+                if (!isFlipped) {
+                    // Flip to back
+                    profileCard.classList.add('flipped');
+                    isFlipped = true;
+                } else {
+                    // Flip to front
+                    profileCard.classList.remove('flipped');
+                    isFlipped = false;
+                }
             }
             
             // Mouse click
-            profileCard.addEventListener('click', flipCard);
+            profileCard.addEventListener('click', function(e) {
+                // Only flip if clicking on the card itself, not interactive elements
+                if (e.target === profileCard || 
+                    e.target.classList.contains('card-front') || 
+                    e.target.classList.contains('profile-image-container') ||
+                    e.target.classList.contains('profile-name') ||
+                    e.target.classList.contains('hint')) {
+                    flipCard();
+                }
+            });
             
             // Touch support
             profileCard.addEventListener('touchstart', function(e) {
@@ -645,8 +683,15 @@
             }, { passive: false });
             
             profileCard.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                flipCard();
+                const target = e.changedTouches[0].target;
+                if (target === profileCard || 
+                    target.classList.contains('card-front') || 
+                    target.classList.contains('profile-image-container') ||
+                    target.classList.contains('profile-name') ||
+                    target.classList.contains('hint')) {
+                    e.preventDefault();
+                    flipCard();
+                }
             }, { passive: false });
             
             // Keyboard support
@@ -666,7 +711,11 @@
                 sessionStorage.setItem('visited', 'true');
                 setTimeout(() => {
                     profileCard.classList.add('flipped');
-                    setTimeout(() => profileCard.classList.remove('flipped'), 3000);
+                    isFlipped = true;
+                    setTimeout(() => {
+                        profileCard.classList.remove('flipped');
+                        isFlipped = false;
+                    }, 3000);
                 }, 1000);
             }
             
@@ -732,11 +781,58 @@
             profileCard.addEventListener('click', function() {
                 if (isModalOpen) {
                     closeModal();
-                    if (profileCard.classList.contains('flipped')) {
+                    if (isFlipped) {
                         profileCard.classList.remove('flipped');
+                        isFlipped = false;
                     }
                 }
             });
+            
+            // Generate bubbles
+            function createBubbles() {
+                const bubblesContainer = document.querySelector('.bubbles');
+                const bubbleCount = 8;
+                
+                for (let i = 0; i < bubbleCount; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('bubble');
+                    
+                    // Random size between 10px and 100px
+                    const size = Math.random() * 90 + 10;
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    
+                    // Random position
+                    bubble.style.left = `${Math.random() * 100}%`;
+                    
+                    // Random animation duration between 10s and 20s
+                    const duration = Math.random() * 10 + 10;
+                    bubble.style.animationDuration = `${duration}s`;
+                    
+                    // Random delay
+                    bubble.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    bubblesContainer.appendChild(bubble);
+                }
+            }
+            
+            createBubbles();
+            
+            // Prevent zooming on mobile
+            document.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
+            
+            // Prevent double-tap zoom
+            let lastTap = 0;
+            document.addEventListener('touchend', function(e) {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                }
+                lastTap = currentTime;
+            }, { passive: false });
         });
     </script>
 </body>
